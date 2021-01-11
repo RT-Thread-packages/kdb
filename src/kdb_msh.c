@@ -23,14 +23,14 @@ static int kdb_msh_help(int argc, char *argv[]);
 static int kdb_msh_start(int argc, char *argv[]);
 static int kdb_msh_dump(int argc, char *argv[]);
 static int kdb_msh_stop(int argc, char *argv[]);
-static int kdb_msh_isinval(int argc, char *argv[]);
+static int kdb_msh_init(int argc, char *argv[]);
 
 static const struct kdb_cmd_des _kdb_cmd[] = 
 {
     {"-h", "print help", kdb_msh_help},
     {"-s", "start take notes", kdb_msh_start},
     {"-d", "dump take notes", kdb_msh_dump},
-    {"-ii", "is inval", kdb_msh_isinval},
+    {"--init", "initialize kernel debug tool", kdb_msh_init},
     {"--stop", "stop takle notes", kdb_msh_stop},
 };
 
@@ -46,13 +46,23 @@ static int kdb_msh_help(int argc, char *argv[])
     return 0;
 }
 
+static int kdb_msh_init(int argc, char *argv[])
+{
+    if (argc != 2)
+        return -1;
+
+    kdb_sys_init();
+    rt_kprintf("Kernel debug tool has initialized.\n");
+    return 0;
+}
+
 static int kdb_msh_start(int argc, char *argv[])
 {
     if (argc != 2)
         return -1;
 
     kdb_sys_start();
-    rt_kprintf("rtx start...\n");
+    rt_kprintf("Kernel debug tool starts...\n");
     return 0;
 }
 
@@ -71,16 +81,7 @@ static int kdb_msh_stop(int argc, char *argv[])
         return -1;
 
     kdb_sys_stop();
-    rt_kprintf("rtx stop.\n");
-    return 0;
-}
-
-static int kdb_msh_isinval(int argc, char *argv[])
-{
-    if (argc != 2)
-        return -1;
-
-    rt_kprintf("is inval:%d\n", kdb_sys_isinval());
+    rt_kprintf("Kernel debug tool stops.\n");
     return 0;
 }
 

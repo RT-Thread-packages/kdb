@@ -20,10 +20,6 @@
 #define __KDB2STR(v) #v
 #define _KDB2STR(v)  __KDB2STR(v)
 
-RT_WEAK void kdb_output(char *buf, int len)
-{
-}
-
 void kdb_printf_output(const char *fmt, ...)
 {
     va_list args;
